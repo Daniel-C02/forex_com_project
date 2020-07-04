@@ -1,0 +1,122 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content cubesBG">
+  {% if error %}
+  <div class="f_error_wrap">
+    <div class="f_error">
+      {{ error }}
+    </div>
+  </div>
+  {% endif %}
+  <div class="posttrade_content">
+    <div class="form_left">
+        <div class="trade_tab">
+          <div class="trade_tab_inner">
+              <a class="tablink_pt">Post Trade</a>
+          </div>
+        </div>
+        <form class="form_detail_pt" method="POST" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          <div class="tabcontent_pt">
+            
+            <div class=" form_row_pt">
+              <label class="trade_label" for="pair">Pair</label>
+              {{ form.pair }}
+              <!-- select id_pair
+              option -->
+            </div>
+      
+            <div class=" form_row_pt">
+              <label class="trade_label" for="winlose">Win/Lose</label>
+              {{ form.winlose }}
+              <!-- select id_winlose
+              option -->
+            </div>
+
+            <div class=" form_row_pt">
+              <label class="trade_label" for="pips">Pips</label>
+              <input class="trade_input" type="number" name="pips" value="1" min="0" id="id_pips">
+            </div>
+
+            <div class=" form_row_pt">
+              <label class="trade_label" for="lotsize">Lot Size</label>
+              <input class="trade_input" type="number" name="lotsize" step="0.01" id="id_lotsize">
+            </div>
+
+            <div class=" form_row_pt">
+              <label class="trade_label" for="amount_0">Profit</label>
+              {{ form.amount }}
+              <!-- input id_amount_0
+              select id_amount_1
+              option -->
+            </div>
+          
+            <div class=" form_row_pt">
+              <label class="trade_label" for="openedpositionon">Date</label>
+              <input class="trade_input" type="date" name="openedpositionon" id="TradeOpenedpositionon" required>
+            </div>
+            
+            <div class=" form_row_pt">
+              <label class="trade_label" for="description">Description</label>
+              <textarea type="text" name="description" maxlength="100" id="id_description"></textarea>
+            </div>
+          
+            <div class=" form_row_pt">
+              <label class="trade_label" for="image">Image <div id="show"></div></label>
+              <input class="trade_input_img" onchange="upload_img(this), showFileSize()" type="file" name="image" id="id_image" required>  
+            </div>
+
+            <div class="preview_img_div form_row_pt_last">
+              <img id="img_id" src="#" alt="Unsuccessful upload. Try again" style="display:none;"/>
+            </div>
+
+            <div class="pt_btn">
+              <div class="form_row_pswd_btn">
+                  <input type="submit" class="input_pswd_btn" value="Post">
+              </div>
+              <div class="form_row_pswd_btn">
+                  <a class="input_pswd_btn" href="{% url 'userprofile' %}">Discard</a>
+              </div>
+            </div>
+
+          </div>
+        </form>
+    </div>
+  </div>
+</div> 
+
+
+
+<script type="text/javascript">
+  function upload_img(input) {
+      var x, i;
+      x = document.querySelectorAll("#img_id");
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $('#img_id').attr('src', e.target.result);
+              for (i = 0; i < x.length; i++) {
+                x[i].style.display = "inline-block";
+              }
+          }
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  function showFileSize() {
+    var file = document.getElementById("id_image").files[0];
+    var mbsize = file.size/1024/1024;
+    var str = mbsize.toString()
+    var mb = str.slice(0, 4);
+    if(mb > 5) {
+      document.getElementById("show").innerHTML = "ALLERT " + mb + "MB/5MB";
+    } else { 
+      document.getElementById("show").innerHTML = mb + "MB";
+    }
+  }
+</script>
+
+{% endblock %}

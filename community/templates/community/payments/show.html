@@ -1,0 +1,39 @@
+{% extends 'community/payments/layout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="page-content" style="display: inline-block; text-align: center;">
+  <div class="changep_content">
+      <div class="form_change" style="padding: 2.2rem 0 1.2rem 0;">
+          <div class="img_tab">
+              <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+          </div>
+          <div class="tab_pr">
+              <div class="tab_inner_pswd">
+                  <a class="pay_result">{{result.header}}</a>
+              </div>
+          </div>
+          <div class="tabcontent">
+            <div class="pay_result_message">{{result.message}}</div> 
+          </div>
+      </div>
+      <div class="payment_thanks">
+        <ul style="list-style-type: none;">
+          <li>Thank you for supporting this site</li>
+          <li>Without you there would be no Forex_Flow_</li>
+        </ul>
+      </div>
+  </div>
+
+  <div class="show_btn">
+    <div class="row_show">
+        <a class="input_pswd_btn" href="{% url 'home' %}">Home</a>
+    </div>
+    <div class="row_show">
+        <a class="input_pswd_btn" href="{% url 'userprofile' %}">Profile</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class='userprofile'>
+
+  <section class='userprofileHead'>
+    <div class="top_head">
+      <div class="userimage">
+        <!-- {% if user.userprofile.authentic %}
+          <i class="fa fa-check-square-o auth_check"></i>
+        {% endif %} -->
+
+        {% if user.userprofile.image %}
+          <img class="pfp" src="{{ user.userprofile.image.url }}" alt=""> 
+        {% else %}
+          {% if user.userprofile.gender == 'Male' %}
+            <img class="pfp" src="{% static 'community/images/man.PNG' %}" alt=""> 
+          {% else %}
+            <img class="pfp" src="{% static 'community/images/woman.PNG' %}" alt=""> 
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="TradeCount">
+        <div class="TradeTotal" >Trades</div>
+        <div class='count'>
+          {% if trades %}
+            {{ trades.count }}
+          {% else %}
+            0
+          {% endif %}
+        </div>
+      </div>
+      <div class="User_level">
+        <div class='level'>
+          {{ user.userprofile.traderlevel }}
+        </div>
+      </div>
+
+      {% if user.userprofile.instagram %}
+        <div class="inst_account">
+          <a target="_blank" href="{{ user.userprofile.instagram }}"><i class="fa fa-instagram profile_insta" aria-hidden="true"></i></a>
+        </div>
+      {% else %}
+        <div class="inst_account">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="mid_head">
+      <div class="userName">
+        <div class="userNameh2">{{ user }} {% if user.userprofile.authentic %}<i class="fa fa-check-square-o auth_check"></i>{% endif %}</div>
+      </div>
+      <div class="countryName">{{ user.userprofile.country.name }} </div>
+    </div>
+    <div class="bio">
+      {{ user.userprofile.bio }}
+    </div>
+
+  </section>
+
+  <section class='usertrades'>
+    {% for trade in trades %}
+
+    <div class="card_container">
+      <div class="post">
+
+        <div class="card_img_div">
+          <img class="cardimg" src="{{ trade.image.url }}" alt="">
+        </div>
+
+        <div class="body_post">
+            {% if trade.winlose == "WIN" %}
+            <div style="color: green">
+            {% elif trade.winlose == "LOSE" %}
+            <div style="color: #a00000">
+            {% else %}
+            <div style="color: #000">
+            {% endif %}
+
+              <div class="Card_Head">
+                <div class="Card_title">{{ trade.pair }}</div>
+                <div class="Card_date">{{ trade.openedpositionon | date:"F d"  }}</div>
+              </div>
+         
+              <div class="Card_Body">
+                {% if trade.pips %}
+                  <div class="Card_pips">{{ trade.pips }} <div class="font_12"> Pips</div></div>
+                {% else %}
+                {% endif %}
+
+                {% if trade.lotsize %}
+                  <div class="Card_lotsize">{{ trade.lotsize }} <div class="font_12"> LS</div></div>
+                {% else %}
+                {% endif %}
+                
+              </div>
+
+              <div class="Card_Footer">
+                {% if trade.amount %}
+
+                  {% if trade.amount|make_list|first == "U" %}
+                    <div class="Card_profit" >${{ trade.amount|slugify|slice:"2:" }}</div>
+                  {% elif trade.amount|make_list|first == "G" %}  
+                    <div class="Card_profit" >£{{ trade.amount|slugify|slice:"2:" }}</div>
+                  {% else %}
+                    <div class="Card_profit" >€{{ trade.amount|slugify }}</div>
+                  {% endif %}
+
+                {% else %}
+                {% endif %}
+                <div class="button card_btn">
+                  <a class="card_btn_A" href="{% url 'viewyourtrade' trade.id %}"><i class="fa fa-2x fa-sign-in"></i></a>
+                </div>
+              </div>
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+    {% endfor %}
+  </section>
+
+</div>
+ 
+
+{% endblock %}
+

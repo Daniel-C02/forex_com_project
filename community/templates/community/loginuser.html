@@ -1,0 +1,57 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content">
+    {% if error %}
+        <div class="f_error_wrap">
+            <div class="f_error">
+                {{ error }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="form_content signup_content">
+        <div class="form_right">
+            <div class="img_tab">
+                <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+            </div>
+            <div class="tab_s">
+                <div class="tab_inner">
+                    <a class="tablinks_s" href="{% url 'signupuser' %}">Sign Up</a>
+                </div>
+                <div class="tab_inner">
+                    <a class="tablinks_s active">Log In</a>
+                </div>
+            </div>
+            <form class="form_detail" method="post" action="">
+                {% csrf_token %}
+                <div class="tabcontent" id="sign-in">
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="text" name="username" id="full_name_1" class="input_form_s" placeholder="Username" required>
+                        </label>
+                    </div>      
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="password" name="password" id="password_1" class="input_form_s" placeholder="Password" required>
+                        </label>
+                    </div>
+                    <div class="form_row_last">
+                        <input type="submit" name="register" class="input_register_btn" value="Log In">
+                    </div>
+                    <div class="form_row_forgot">
+                        <div class="forgot_wrap">
+                            <a class="forgot_btn" href="{% url 'reset_password' %}">Forgot Password?</a>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

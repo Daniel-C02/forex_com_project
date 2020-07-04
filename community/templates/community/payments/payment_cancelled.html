@@ -1,0 +1,84 @@
+{% extends 'community/payments/layout.html' %}
+{% load static %}
+{% block content %}
+ 
+<style>
+    @media screen and (max-width: 470px) {
+        .changep_content {
+            margin: 6rem 2rem 6rem !important;
+        }
+    }
+    /* .changep_content {
+        background: #ff4849;
+    }
+    .form_change {
+        background-color: #ffffff;
+        border: 2px solid #ff000085;
+    }
+    .pay_result {
+        font-size: 32px;
+        color: #ff4947 !important;
+    }
+    .pay_result_message {
+        color: #ff4947 !important;
+    }
+    .tab_pr {
+        margin: auto auto 1rem;
+    } */
+    .changep_content {
+        background: #292b2c;;
+    }
+    .pay_result {
+        color: inherit !important;
+        margin: 1rem .5rem 1rem;
+        font-size: 26px;
+    }
+    .pay_result_message {
+        color: inherit !important;
+    }
+    .payment_thanks {
+        font-size: 18px;
+    }
+    .tabcontent {
+        padding-bottom: 0;
+    }
+    .tab_pr {
+        margin: auto auto 1rem;
+    }
+</style>
+
+<div class="page-content" style="display: inline-block; text-align: center;">
+    <div class="changep_content">
+        <div class="form_change" style="padding: 2.2rem 0 0 0;">
+            <div class="img_tab">
+                <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+            </div>
+            <div class="tab_pr">
+                <div class="tab_inner_pswd">
+                    <a class="pay_result">Payment Cancelled</a>
+                </div>
+            </div>
+            <div class="tabcontent">
+              <div class="pay_result_message">Why ?</div> 
+            </div>
+        </div>
+        <div class="payment_thanks">
+          <ul style="list-style-type: none;">
+            <li>Thank you for not supporting this site</li>
+            <li>Without donators there would be no Forex_Flow_</li>
+          </ul>
+        </div>
+    </div>
+  
+    <div class="show_btn">
+      <div class="row_show">
+          <a class="input_pswd_btn" href="{% url 'home' %}">Home</a>
+      </div>
+      <div class="row_show">
+          <a class="input_pswd_btn" href="{% url 'userprofile' %}">Profile</a>
+      </div>
+    </div>
+  
+  </div>
+
+{% endblock %}

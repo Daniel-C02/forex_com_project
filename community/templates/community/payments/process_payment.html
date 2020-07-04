@@ -1,0 +1,55 @@
+{% extends 'community/payments/layout.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+        .Home_Footer {
+            background-color: #eee;
+        }
+        .paypal_form {
+            margin-top: 1.3rem;
+            border: 3px solid #FFC439;
+            width: 250px;
+        }
+        form {
+            padding: 15px 0 10px 0;
+            text-align: center;
+        }
+        .checkout, .container {
+            max-width: 350px;
+        }
+        @media screen and (min-width: 1050px) {
+            .checkout, .container {
+                margin-top: 7rem;
+            }
+        }
+    </style>
+    
+    <div class="wrapper">
+        <div class="checkout container">
+        
+            <header>
+                <div class='pay_name'>Forex_Flow_</div>
+                <div class='pay_Header'>Support Page</div>
+                <div class='pay_Desc'>Make a donation with PayPal using PayPal</div>
+            </header>
+        
+            <div class="paypal_form">
+                {{ form.render }}
+                <!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                    <input type="hidden" name="cmd" value="_xclick" id="id_cmd">
+                    <input type="hidden" name="charset" value="utf-8" id="id_charset">
+                    <input type="hidden" name="currency_code" id="id_currency_code">{{ form.currency_code }}
+                    <input type="hidden" name="business" id="id_business">{{ form.business }}
+                    <input type="hidden" name="item_name" id="id_item_name">{{ form.item_name }}
+                    <input type="hidden" name="invoice" id="id_invoice">{{ form.invoice }}
+                    <input type="hidden" name="cancel_return" id="id_cancel_return">{{ form.cancel_return }}
+                    <input type="hidden" name="return" id="id_return">{{ form.return_url }}
+                    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="Buy it Now">
+                </form> -->
+            </div>
+            
+        </div>
+    </div>
+
+{% endblock %}

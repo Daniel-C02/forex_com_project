@@ -1,0 +1,269 @@
+{% extends 'community/payments/layout.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  #payment_wrapper {
+    min-height: 100vh; 
+    font-family: inherit;
+  }
+  @media (max-width: 1050px) {
+    #payment_wrapper {
+      padding: 0;
+    }
+  }
+</style>
+
+<div class="home_main_div">
+
+  <div style="min-height: 94vh;">
+    <section class='Home_Head'>
+      <div class='hh_contents_wrap'>
+
+        <!-- <div>
+          <img class='hh_image_two' src="{% static 'community/images/lightning.PNG' %}" alt="">
+        </div> -->
+
+        <div class='hh_contents'>
+          <div class='hh_Htext'>
+            Journaling your trades has</br>never been easier
+          </div>
+          <div class='hh_Hsubtext'>
+            for forex traders by forex traders
+          </div>
+          <div class='hh_btn'>
+            <a class='hh_btn_A btn' href="#prices">Learn more</a>
+          </div>
+        </div>
+
+        <div class='hh_image_div'>
+          <img class='hh_image' src="{% static 'community/images/Houses.PNG' %}" alt="">
+        </div>
+
+      </div>
+    </section>    
+    <section class='Home_heading'>
+      <div class="heading_wrap">
+        <div class='home_heading_desc'>
+          Forex_Flow_Community
+        </div>
+        <div class='home_heading_mob'>
+          Forex_Flow_</br>Community
+        </div>
+      </div>
+    </section>   
+
+    <section class='Home_content'>
+      <div class="content_wrap">
+        <div class="uptrend_img_div">
+          <img class="uptrend_img" src="{% static 'community/images/uptrend2.PNG' %}" alt="">
+        </div>
+        
+        <div class="content_wrap_two">
+          <div class='home_content_first'>
+            Active Community of forex traders all around the word.
+          </div>
+          <div class='home_content_second'>
+            Start Journaling your trades</br>today and take your forex to</br>the next level
+          </div>
+        </div>
+      </div>
+    </section>  
+  </div>
+
+  <section class="pricing" id="prices">
+    <div class="container_pricing">
+
+      <!-- <div class="card_pricing">
+        <div class="P_title">Plus</div>
+        <div class="P_price">$3<span class="period"> /mo</span></div>
+        <hr class="pricing_hr">
+        <ul class="pricing_ul">
+          <li class="pricing_li"><span class="pricing_span"></span>3 bucks isn't a LOT</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Follow up to 5 users</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Be Part of the community</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Go to 5 dollar plan</br>for education</li>
+        </ul>
+        <a href="#" class="pricing_button">Invest Now</a>
+      </div>
+
+      <div class="card_pricing">
+        <div class="P_title">Propper</div>
+        <div class="P_price">$5<span class="period"> /mo</span></div>
+        <hr class="pricing_hr">
+        <ul class="pricing_ul">
+          <li class="pricing_li"><span class="pricing_span"></span>5 bucks is less than 3</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Follow Ulimited users</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Become part of the Family</li>
+          <li class="pricing_li"><span class="pricing_span"></span>Access to LOT's of</br>free Educational content</li>
+        </ul>
+        <a href="#" class="pricing_button">Invest Now</a>
+      </div> -->
+
+      <div class="card_pricing">
+        <div class="P_title">Free</div>
+        <div class="P_price">$0<span class="period"> /mo</span></div>
+        <hr class="pricing_hr">
+        <ul class="pricing_ul">
+          <li class="pricing_li"><span class="pricing_span"></span>
+            Please consider making</br>a donation to keep</br>this site up and running
+          </li>
+          <li class="pricing_li"><span class="pricing_span"></span>
+            with <i class="fa fa-heart pricing_heart" aria-hidden="true"></i> from
+            <img class="SA_flag" src="{% static 'community/images/SA2.PNG' %}" alt="">
+          </li>
+        </ul>
+        <a href="{% url 'process_payment' %}" class="pricing_button">Donate Now <i class="fa fa-paypal"></i></i></a>
+      </div>
+
+    </div>
+  </section>
+
+  <section  class="contact_home_sec">
+    <div id="cnt_info" class="mcntact_content">
+      <div class="cntHeader">
+          <div class="contacthead">CONTACT US</div>
+      </div>
+      <hr class="cnt_HR">
+      <article class="contact_post">
+          <div class="contactDetails">
+            <div class="CD_head">Forex_Flow_</div>
+            <ul class="CD_ul">
+              <li class="CD_li">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <a href="mailto:pedersenfx@gmail.com" class="mailtoA"> pedersenfx@gmail.com</a>
+              </li>
+              <li class="CD_li">
+                <i class="fa fa-telegram" aria-hidden="true"></i> @D_Pedersen
+              </li>
+            </ul>
+          </div>
+      </article>
+      <div class="altFade">
+          Alternatively, to make an online enquiry please 
+          <a class="contact_btn" onclick="displayform(), removeContact()" role="button">CLICK HERE</a>
+      </div>
+    </div>
+ 
+
+
+  <div class="home_contactform_wrapper" id="cnt_form" style="display: none;">
+    <div class="form_content signup_content">
+        <div class="form_right" >
+            <div class="img_tab">
+                <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+            </div>
+            <div class="tab_s">
+                <div class="tab_inner_pswd">
+                    <a class="tablinks_pswd active">Contact Us</a>
+                </div>
+            </div>
+            <form class="form_detail" method="POST">
+                {% csrf_token %}
+                <div class="tabcontent" id="sign-up">
+
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="text" name="Name" class="input_form_s" placeholder="Name" value="{{ user.userprofile.name }}" required>
+                        </label>
+                    </div>
+
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="email" name="Email" class="input_form_s" placeholder="E-Mail" value="{{ user.email }}" required>
+                        </label>
+                    </div>
+
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input name='Phone' type="text" class="input_form_s" placeholder="Phone" required>
+                        </label>
+                    </div>
+
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input name='Subject' type="text" class="input_form_s" placeholder="Subject" required>
+                        </label>
+                    </div>
+
+                    <div class="form_row">
+                      <label class="form_row_inner">
+                          <label class="msg_contact" for="Message">Message</label>
+                          <textarea name="Message" class="form-control home_messageFC" required></textarea>
+                      </label>
+                    </div>
+
+                    <div class="form_row_pswd">
+                      <div class="form_row_pswd_btn">
+                          <input type="submit" class="input_pswd_btn" value="Send">
+                      </div>
+                      <div class="form_row_pswd_btn">
+                          <a class="input_pswd_btn" onclick="removeForm(), showContact()">Back</a>
+                      </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+
+
+</section>
+
+{% if tymessage == 'True' %}
+  <section class="tymessage">
+    <div class="tymessage_wrap">
+      <div class="ty_head">
+        Test
+      </div>
+      <div class="ty_body">
+        Test
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+  <script>
+    function showContact() {
+        var x, i;
+        x = document.querySelectorAll("#cnt_info");
+        for (i = 0; i < x.length; i++) {
+        x[i].style.display = "inline-block";
+        } 
+    }
+    function removeContact() {
+        var x, i;
+        x = document.querySelectorAll("#cnt_info");
+        for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+        } 
+    }
+    function displayform() {
+        var x, i;
+        x = document.querySelectorAll("#cnt_form");
+        for (i = 0; i < x.length; i++) {
+        x[i].style.display = "flex";
+        }
+    }
+    function myFunction() {
+        var x, i;
+        x = document.querySelectorAll("#ThankYouMsg");
+        for (i = 0; i < x.length; i++) {
+        x[i].style.display = "block";
+        }
+    }
+    function removeForm() {
+        var q, w;
+        q = document.querySelectorAll("#cnt_form");
+        for (w = 0; w < q.length; w++) {
+        q[w].style.display = "none";
+        }
+    }
+</script>
+
+<!-- Home Main Div -->
+</div>
+
+{% endblock %}

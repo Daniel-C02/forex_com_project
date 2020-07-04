@@ -1,0 +1,136 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<style type="text/css">
+  .HN_MV {
+    display: none;
+  }
+</style>
+
+<div id="community_wrapper">
+
+  <section class='Feed_navbar bg-light'>
+    <nav class="navbar navbar_feed">
+      <div class="nav_feed">
+        <a class="feed_A" href="{% url 'feed' %}">Feed</a>
+      </div>
+      <div class="nav_com active">
+        <a class="com_A">Community</a>
+      </div>
+    </nav>
+  </section>
+
+  <section class="FeedHead ">
+    <div class="feed_head ComHead">Community</div>
+    <div class="nav_search">
+      <div>
+        <form class="searchForm collapsed" method="GET">              
+          <input class="searchTerm" type="search" name="search" value="{{ query }}" placeholder="Name" autocomplete="off"/>
+          <button class="searchBtn" type="submit"><i class="fa fa-lg fa-search"></i></button>
+        </form>
+      </div>
+    </div>
+    <!-- <div class="all_users">
+      <div class="all_users_text">Active Traders</div>
+      <div class="all_users_cnt">{{active_users.count}}</div>
+    </div> -->
+  </section>
+
+  <section class='usertrades'>
+    {% for account in accounts %}
+    <div class="com_card_container">
+      <div class="com_post">
+        <div class="img_div_com">
+          {% if account.image %}
+            <img class="com_pfp" src="{{ account.image.url }}" alt=""> 
+          {% else %}
+            {% if account.gender == 'Male' %}
+              <img class="com_pfp" src="{% static 'community/images/man.PNG' %}" alt=""> 
+            {% else %}
+              <img class="com_pfp" src="{% static 'community/images/woman.PNG' %}" alt=""> 
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="body_post">
+            <div class="com_head">
+                <div class="com_trades_num" >
+                  {% if account.traderlevel == "Beginner" %}1
+                  {% elif account.traderlevel == "Intermediate" %}2
+                  {% elif account.traderlevel == "Advanced" %}3
+                  {% elif account.traderlevel == "Expert" %}4
+                  {% elif account.traderlevel == "ProTrader" %}5
+                  {% else %}0
+                  {% endif %}
+                </div>
+                <div class="com_level">
+                  Level
+                </div>
+            </div>
+            <div class="com_trades_wrap">
+              <div class="com_trades_num" id="com_title{{account.id}}"></div>
+              <div class="com_trades">
+                Trades
+              </div>
+            </div>
+        </div>
+        <div class="Card_Footer">
+          <div class="com_title">{{ account.user.username | slice:"0:13"}}</div>
+          <div class="button card_btn">
+            <a class="card_btn_A" href="{% url 'viewuser' account.id %}">
+              {% if account.authentic %}
+                <i style="color: #00d8ff;" class="fa fa-2x fa-sign-in realauth"></i>
+              {% else %}
+                <i class="fa fa-2x fa-sign-in realauth"></i>
+              {% endif %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var count = 0;
+      '{% for trade in trades %}'
+        '{% if trade.user == account.user %}'
+          count += 1;
+        '{% endif %}'
+      '{% endfor %}'
+      document.getElementById("com_title{{account.id}}").innerHTML = count;
+    </script>
+
+    {% endfor %}
+  </section>
+
+  <div id="paginator">
+    <div class="paginator_wrap">
+      <div class="pag_previous">
+        {% if accounts.has_previous %}
+          <!-- <a href="?page=1">&laquo; first</a> -->
+          <a href="?page={{ accounts.previous_page_number }}">
+            <svg class="bi bi-arrow-bar-left" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M5.854 4.646a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L3.207 8l2.647-2.646a.5.5 0 0 0 0-.708z"/>
+              <path fill-rule="evenodd" d="M10 8a.5.5 0 0 0-.5-.5H3a.5.5 0 0 0 0 1h6.5A.5.5 0 0 0 10 8zm2.5 6a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 1 0v11a.5.5 0 0 1-.5.5z"/>
+            </svg>
+            PREV
+          </a>
+        {% endif %}
+      </div>
+      <div class="pag_next">
+        {% if accounts.has_next %}
+          <a href="?page={{ accounts.next_page_number }}">NEXT
+            <svg class="bi bi-arrow-bar-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M10.146 4.646a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L12.793 8l-2.647-2.646a.5.5 0 0 1 0-.708z"/>
+              <path fill-rule="evenodd" d="M6 8a.5.5 0 0 1 .5-.5H13a.5.5 0 0 1 0 1H6.5A.5.5 0 0 1 6 8zm-2.5 6a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 1 0v11a.5.5 0 0 1-.5.5z"/>
+            </svg>
+          </a>
+          <!-- <a href="?page={{ trades.paginator.num_pages }}">last &raquo;</a> -->
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}

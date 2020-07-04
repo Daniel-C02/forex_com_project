@@ -1,0 +1,105 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  .nav-header {
+    left: 40px;
+  }
+</style>
+
+<section class="back_btn">
+  <a href="{% url 'feed' %}"><i class='fas fa-arrow-left'></i></a>
+</section>
+
+
+<div class='userprofile'>
+
+  <section class='ViewUserprofileHead'>
+    <div class="top_head">
+      <div class="userimage">
+        {% if userprofile.image %}
+          <img class="pfp" src="{{ userprofile.image.url }}" alt=""> 
+        {% else %}
+          {% if userprofile.gender == 'Male' %}
+            <img class="pfp" src="{% static 'community/images/man.PNG' %}" alt=""> 
+          {% else %}
+            <img class="pfp" src="{% static 'community/images/woman.PNG' %}" alt=""> 
+          {% endif %}
+        {% endif %}
+      </div>
+
+      <div class="viewTrade_Head">
+        {% if trade.pips %}
+          <div class="view_pips"><div class="font_12"> Pips</div>{{ trade.pips }}</div>
+        {% else %}
+        {% endif %}
+
+        {% if trade.amount %}
+          <div class="view_lotsize"><div class="font_12">LS</div>{{ trade.lotsize }}</div>
+        {% else %}
+        {% endif %}
+
+        {% if trade.amount %}
+          <div class="view_amount" id="BE">
+            <div id="PL" class="font_12"></div>
+            <div>
+              {% if trade.amount %}
+                {% if trade.amount|make_list|first == "U" %}
+                  ${{ trade.amount|slugify|slice:"2:" }}
+                {% elif trade.amount|make_list|first == "G" %}  
+                  £{{ trade.amount|slugify|slice:"2:" }}
+                {% else %}
+                  €{{ trade.amount|slugify }}
+                {% endif %}
+              {% else %}
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="viewTrade_Body">
+      <div class="view_pair">{{ trade.pair }}</div>
+      <div class="view_date">{{ trade.openedpositionon | date:"F d"  }}</div>
+      <div class="view_winlose">{{ trade.winlose }}</div>
+    </div>
+
+  </section>
+
+  <section class="view_username">
+    <a href="{% url 'viewuser' user.id %}" class="user_trade_nameA">
+      {% if userprofile.name %}
+        <div class="view_usr">{{ userprofile.name }}  {% if user.userprofile.authentic %}<i class="fa fa-check-square-o auth_check"></i>{% endif %}</div>
+      {% else %}
+        <div class="view_usr">{{ userprofile.user }}</div>
+      {% endif %}
+    </a>
+  </section>
+
+
+  <section class="viewtrade_content">
+    {% if trade.image %}
+      <div class="view_img_div">
+        <img class="view_img" src="{{ trade.image.url }}" alt="">
+      </div>
+    {% else %}
+      <div class="no_img_space"></div>
+    {% endif %}
+    <div class="view_description">{{ trade.description }}</div>
+  </section>
+
+</div>
+
+<script type="text/javascript">
+  var pl = '';
+  if ('{{trade.winlose}}' == 'WIN') { pl = 'Profit' }
+  else if ('{{trade.winlose}}' == 'LOSE') { pl = 'Loss' }
+  else { pl = 'BE' }
+  document.getElementById("PL").innerHTML = pl;
+</script>
+
+{% endblock %}

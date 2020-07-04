@@ -1,0 +1,149 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class='userprofile'>
+
+  <style>
+    .nav-header {
+      left: 40px;
+    }
+  </style>
+
+  <section class="back_btn">
+    <a href="{% url 'fullcommunity' %}"><i class='fas fa-arrow-left'></i></a>
+  </section>
+
+  <section class='userprofileHead'>
+    <div class="top_head">
+      <div class="userimage">
+        {% if userprofile.image %}
+          <img class="pfp" src="{{ userprofile.image.url }}" alt=""> 
+        {% else %}
+          {% if userprofile.gender == 'Male' %}
+            <img class="pfp" src="{% static 'community/images/man.PNG' %}" alt=""> 
+          {% else %}
+            <img class="pfp" src="{% static 'community/images/woman.PNG' %}" alt=""> 
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="TradeCount">
+        <div class="TradeTotal" >Trades</div>
+        <div class='count'>
+          {% if trades %}
+            {{ trades.count }}
+          {% else %}
+            0
+          {% endif %}
+        </div>
+      </div>
+      <div class="User_level">
+        <div class='level'>
+          {{ userprofile.traderlevel }}
+        </div>
+      </div>
+      {% if userprofile.instagram %}
+        <div class="inst_account">
+          <a target="_blank" href="{{ userprofile.instagram }}"><i class="fa fa-instagram profile_insta" aria-hidden="true"></i></a>
+        </div>
+      {% else %}
+        <div class="inst_account">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+    </div>
+    <div class="mid_head">
+      <div class="userName">
+        <div class="userNameh2">{{ userprofile.user }}  {% if userprofile.authentic %}<i class="fa fa-check-square-o auth_check"></i>{% endif %}</div> 
+      </div>
+      <div class="countryName">{{ userprofile.country.name }} </div>
+    </div>
+    <div class="bio">
+      {{ userprofile.bio }}
+    </div>
+  </section>
+
+  <section class='usertrades'>
+    {% for trade in trades %}
+
+    <div class="card_container">
+      <div class="post">
+
+        <div class="card_img_div">
+          <img class="cardimg" src="{{ trade.image.url }}" alt="">
+        </div>
+
+        <div class="body_post">
+            <input style="display:none;" id="color{{trade.id}}" value="{{ trade.winlose }}">
+            <div id="colors{{trade.id}}" value="{{ trade.winlose }}">
+
+              <div class="Card_Head">
+                <div class="Card_title">{{ trade.pair }}</div>
+                <div class="Card_date">{{ trade.openedpositionon | date:"F d"  }}</div>
+              </div>
+         
+              <div class="Card_Body">
+                {% if trade.pips %}
+                  <div class="Card_pips">{{ trade.pips }} <div class="font_12"> Pips</div></div>
+                {% else %}
+                {% endif %}
+
+                {% if trade.lotsize %}
+                  <div class="Card_lotsize">{{ trade.lotsize }} <div class="font_12"> LS</div></div>
+                {% else %}
+                {% endif %}
+                
+              </div>
+
+              <div class="Card_Footer">
+                <!-- <div class="Card_winlose">{{ trade.winlose }}</div> -->
+                {% if trade.amount %}
+                  <div class="Card_profit" id="amt{{trade.id}}">{{ trade.amount }}</div>
+                {% else %}
+                {% endif %}
+                
+                <div class="button card_btn">
+                  <a class="card_btn_A" href="{% url 'viewusertrade' trade.id trade.user.id%}"><i class="fa fa-2x fa-sign-in"></i></a>
+                </div>
+              </div>
+
+            </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var WL = document.getElementById("color{{trade.id}}").value;
+        if (WL == "WIN") {
+          document.getElementById("colors{{trade.id}}").style.color = "green";
+        } else if (WL == "LOSE") {
+          document.getElementById("colors{{trade.id}}").style.color = "#a00000";
+        } else {
+          document.getElementById("colors{{trade.id}}").style.color = "#000";
+        }
+    </script>
+    <script type="text/javascript">
+      var x = '{{ trade.amount }}'.toString();
+      var z = x.slice(2, );
+      var y = x[0];
+      if (y == 'G') {
+        document.getElementById("amt{{trade.id}}").innerHTML = z;
+      }
+    </script>
+    <script type="text/javascript">
+      var a = '{{ trade.amount }}'.toString();
+      var b = '€' + a.slice(0,-1);
+      var c = a.slice(-1);
+      if (c == '€') {
+        document.getElementById("amt{{trade.id}}").innerHTML = b;
+      }
+    </script>
+
+    {% endfor %}
+  </section>
+
+</div>
+
+
+{% endblock %}

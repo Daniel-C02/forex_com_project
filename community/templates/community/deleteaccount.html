@@ -1,0 +1,29 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content">
+  <div class="signup_content" id="del_form">
+      <div class="form_right">
+        <div class="img_tab">
+          <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+        </div>
+
+        <div class="tabcontent">
+          <div class="delete_text">Are You Sure You Want To Delete Your Account</div> 
+          <div class="delete_text_two">This Action Cannot Be Undone</div> 
+        </div>
+
+        <div class="pt_btn">
+          <div class="form_row_pswd_btn">
+              <a class="delete_btn" href="{% url 'deleteaccount' user.id %}">Delete</a>
+          </div>
+          <div class="form_row_pswd_btn">
+              <a class="input_pswd_btn" href="{% url 'userprofile' %}">Nevermind</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

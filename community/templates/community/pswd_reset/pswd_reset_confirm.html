@@ -1,0 +1,41 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content">
+    <div class="changep_content">
+        <div class="form_change">
+            <div class="img_tab">
+                <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+            </div>
+            <div class="tab_s">
+                <div class="tab_inner_pswd">
+                    <a class="tablinks_pswd active">Enter new password</a>
+                </div>
+            </div>
+            <form class="form_detail" method="post">
+                {% csrf_token %}
+                <div class="tabcontent" id="sign-in">
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="password" name="password1" class="input_form_s" placeholder="New password" required>
+                        </label>
+                    </div>   
+                    <div class="form_row">
+                        <label class="form_row_inner">
+                            <input type="password" name="password2" class="input_form_s" placeholder="Confirm password" required>
+                        </label>
+                    </div> 
+                    <div class="form_row_last">
+                        <input type="submit" name="register" class="input_register_btn" value="Reset My Password">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="pswdchange_help">
+            Please enter your new password twice so we can verify you typed it in correctly.
+        </div>
+    </div>
+</div>
+
+{% endblock %}

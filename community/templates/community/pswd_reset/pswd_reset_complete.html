@@ -1,0 +1,26 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content">
+    <div class="changep_content">
+        <div class="form_change">
+            <div class="img_tab">
+                <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+            </div>
+            <div class="tab_pr">
+                <div class="tab_inner_pswd">
+                    <a class="tablinks_pswd active">Password reset complete</a>
+                </div>
+            </div>
+        </div>
+        <div class="pswdchange_help">
+            Your password has been set. You may go ahead and log in now
+        </div>
+        <div class="form_row_rp_btn">
+            <a class="input_pswd_btn" href="{% url 'loginuser' %}">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

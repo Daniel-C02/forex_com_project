@@ -1,0 +1,177 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-content cubesBG">
+  <div class="f_error">
+    {% if error %}
+      <div class="f_error_wrap">
+        <div class="f_error">
+          {{ error }}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  <div class="posttrade_content">
+    <div class="form_left">
+      <div class="profile_tab">
+        <div class="trade_tab_inner">
+            <a class="tablink_pt">Edit Profile</a>
+        </div>
+      </div>
+      <form class="form-detail" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <div class="tabcontent_pt">
+          
+          <div class=" form_row_pt">
+            <label class="trade_label">
+              <a class="password_label_A" href="{% url 'change_password' %}">Change Password</a>
+            </label>
+          </div>
+
+          <div class=" form_row_pt inputE">
+            <label class="trade_label"><a class="question_anchor" onclick="insertemail(), removequestion()">{% if user.email %}Change email{% else %}Input Email{% endif %}</a></label>
+          </div>
+          <div id="insertE" class="form_row_pt" style="display:none;">
+            <label class="trade_label" for="lotsize">Email</label>
+            <input type="email" name="email" class="trade_input" value="{{ user.email }}" placeholder="Email">
+          </div>
+
+          <div class=" form_row_pt inputU">
+            <label class="trade_label"><a class="question_anchor" onclick="insertusername(), removequestionU()">Change Username</a></label>
+          </div>
+          <div id="insertU" class=" form_row_pt" style="display:none;">
+            <label class="trade_label" for="lotsize">Username</label>
+            <input type="text" name="username" class="trade_input" value="{{ user.username }}" placeholder="Username">
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="lotsize">Name</label>
+            <input type="text" name="name" class="trade_input" value="{{ user.userprofile.name }}" placeholder="Name">
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="instagram">Instagram URL</label>
+            <input type="url" name="instagram" class="trade_input" value="{{ user.userprofile.instagram }}" maxlength="200" id="id_instagram">
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="traderlevel">Trader_Level</label>
+            {{ p_form.traderlevel }}
+            <!-- select id_traderlevel
+            option -->
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="traderlevel">Gender</label>
+            {{ p_form.gender }}
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="traderlevel">Country</label>
+            {{ p_form.country }}
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="bio">Bio</label>
+            <textarea type="text" name="bio" maxlength="100" id="id_bio">{{ user.userprofile.bio  }}</textarea>
+          </div>
+
+          <div class=" form_row_pt">
+            <label class="trade_label" for="image">Profile Pic <div id="show"></div></label>
+            <input class="trade_input_img" onchange="upload_img(this), showFileSize()" type="file" name="image" id="id_image" required>  
+          </div>
+
+          {% if user.userprofile.image %}
+          <div class="preview_img_profile form_row_pt_last">
+            <img id="up_img_id" src="{{ user.userprofile.image.url }}" alt="Unsuccessful upload. Try again" />
+          </div>
+          {% else %}
+          <div class="preview_img_profile form_row_pt_last">
+            <img id="up_img_id" src="#" alt="Unsuccessful upload. Try again" />
+          </div>
+          {% endif %}
+         
+
+          <div class="pt_btn">
+            <div class="form_row_pswd_btn">
+                <input type="submit" class="input_pswd_btn" value="Edit">
+            </div>
+            <div class="form_row_pswd_btn">
+                <a class="input_pswd_btn" href="{% url 'userprofile' %}">Discard</a>
+            </div>
+          </div>
+          
+        </div>
+      </form>
+    </div>
+  </div>
+</div> 
+
+<script>
+  function insertemail() {
+      var x, i;
+      x = $("#insertE");
+      for (i = 0; i < x.length; i++) {
+      x[i].style.display = "block";
+      } 
+  }
+  function removequestion() {
+      var x, i;
+      x = $(".inputE");
+      for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+      } 
+  }
+
+  function insertusername() {
+      var x, i;
+      x = $("#insertU");
+      for (i = 0; i < x.length; i++) {
+      x[i].style.display = "block";
+      } 
+  }
+  function removequestionU() {
+      var x, i;
+      x = $(".inputU");
+      for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none";
+      } 
+  }
+</script>
+<script type="text/javascript">
+  function upload_img(input) {
+      var x, i;
+      x = document.querySelectorAll("#up_img_id");
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $('#up_img_id').attr('src', e.target.result);
+              for (i = 0; i < x.length; i++) {
+                x[i].style.display = "inline-block";
+              }
+          }
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+
+  function showFileSize() {
+    var file = document.getElementById("id_image").files[0];
+    var mbsize = file.size/1024/1024;
+    var str = mbsize.toString()
+    var mb = str.slice(0, 4);
+    if(mb > 5) {
+      document.getElementById("show").innerHTML = "ALLERT " + mb + "MB/5MB";
+      document.getElementById("show").style = "color: #ff4949;" 
+    } else { 
+      document.getElementById("show").innerHTML = mb + "MB";
+    }
+  }
+</script>
+
+
+
+
+
+{% endblock %}

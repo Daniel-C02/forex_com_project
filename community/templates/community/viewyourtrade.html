@@ -1,0 +1,330 @@
+{% extends "community/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  .nav-header {
+    left: 40px;
+  }
+</style>
+
+<section class="back_btn">
+  <a href="{% url 'userprofile' %}"><i class='fas fa-arrow-left'></i></a>
+</section>
+
+<div class='userprofile up_padding'>
+
+  <section class='userprofileHead'>
+    <div class="top_head">
+      <div class="userimage">
+        {% if user.userprofile.image %}
+          <img class="pfp" src="{{ user.userprofile.image.url }}" alt=""> 
+        {% else %}
+          {% if user.userprofile.gender == 'Male' %}
+            <img class="pfp" src="{% static 'community/images/man.PNG' %}" alt=""> 
+          {% else %}
+            <img class="pfp" src="{% static 'community/images/woman.PNG' %}" alt=""> 
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="viewTrade_Head">
+        {% if trade.pips %}
+          <div class="view_pips"><div class="font_12"> Pips</div>{{ trade.pips }}</div>
+        {% else %}
+        {% endif %}
+
+        {% if trade.amount %}
+          <div class="view_lotsize"><div class="font_12">LS</div>{{ trade.lotsize }}</div>
+        {% else %}
+        {% endif %}
+
+        {% if trade.amount %}
+          <div class="view_amount" id="BE">
+            <div id="PL" class="font_12"></div>
+            <div>
+              {% if trade.amount %}
+                {% if trade.amount|make_list|first == "U" %}
+                  ${{ trade.amount|slugify|slice:"2:" }}
+                {% elif trade.amount|make_list|first == "G" %}  
+                  £{{ trade.amount|slugify|slice:"2:" }}
+                {% else %}
+                  €{{ trade.amount|slugify }}
+                {% endif %}
+              {% else %}
+              {% endif %}
+            </div>
+          </div>
+        {% else %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="viewTrade_Body">
+      <div class="view_pair">{{ trade.pair }}</div>
+      <div class="view_date">{{ trade.openedpositionon | date:"F d"  }}</div>
+      <div class="view_winlose">{{ trade.winlose }}</div>
+    </div>
+
+    <section class="edit_section">
+      <div class="edit_btn_wrap" id="edit_sec">
+        <a  class="edit_btn_A" onclick="showform(), removeimage(), showdelete(), removeedit(), showdisc()">Edit</a>
+      </div>
+      <div class="disc_btn_wrap" id="disc_sec" style="display: none;">
+        <a  class="disc_btn_A" onclick="removeform(), showimage(), removedelete(), showedit(), removedisc()">Discard</a>
+      </div>
+      <div class="delete_btn_wrap" id="delete_sec" style="display: none;">
+        <a  class="edit_btn_A" onclick="showdelform(), removeform()">Delete</a>
+      </div>
+    </section>
+
+  </section>
+
+  <section class="viewtrade_content" id="removeIMG">
+    {% if trade.image %}
+      <div class="view_img_div">
+        <img class="view_img" src="{{ trade.image.url }}" alt="">
+      </div>
+    {% else %}
+      <div class="no_img_space"></div>
+    {% endif %}
+    <div class="view_description">{{ trade.description }}</div>
+  </section>
+
+{% if error %}
+  <div class="page-content" id="editForm">
+{% else %}
+  <div class="page-content" id="editForm" style="display: none;">
+{% endif %}
+    {% if error %}
+    <div class="f_error_wrap" style="padding: 2.1rem 0 0 0;"> 
+      <div class="f_error">
+        {{ error }}
+      </div>
+    </div>
+    {% endif %}
+    <div class="posttrade_content">
+      <div class="form_left">
+          <div class="trade_tab">
+            <div class="trade_tab_inner">
+                <a class="tablink_pt">Post Trade</a>
+            </div>
+          </div>
+          <form class="form_detail_pt" method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+  
+            <div class="tabcontent_pt">
+              
+              <div class=" form_row_pt">
+                <label class="trade_label" for="pair">Pair</label>
+                {{ form.pair }}
+                <!-- select id_pair
+                option -->
+              </div>
+        
+              <div class=" form_row_pt">
+                <label class="trade_label" for="winlose">Win/Lose</label>
+                {{ form.winlose }}
+                <!-- select id_winlose
+                option -->
+              </div>
+  
+              {% if form.pips %}
+                <div class=" form_row_pt">
+                  <label class="trade_label" for="pips">Pips</label>
+                  <input class="trade_input" type="number" name="pips" value="{{ form.instance.pips }}" min="0" id="id_pips">
+                </div>
+              {% else %}
+                <div class=" form_row_pt">
+                  <label class="trade_label" for="pips">Pips</label>
+                  <input class="trade_input" type="number" name="pips" value="10" min="0" id="id_pips">
+                </div>
+              {% endif %}
+  
+              <div class=" form_row_pt">
+                <label class="trade_label" for="lotsize">Lot Size</label>
+                <input class="trade_input" type="number" name="lotsize" step="0.01" id="id_lotsize" value="{{ form.instance.lotsize }}">
+              </div>
+  
+              <div class=" form_row_pt">
+                <label class="trade_label" for="amount_0">Profit</label>
+                {{ form.amount }}
+                <!-- input id_amount_0
+                select id_amount_1
+                option -->
+              </div>
+            
+              <div class=" form_row_pt">
+                <label class="trade_label" for="openedpositionon">Date</label>
+                <input class="trade_input" type="date" name="openedpositionon" id="TradeOpenedpositionon" value="{{ form.instance.openedpositionon | date:"Y-m-d" }}" required>
+              </div>
+              
+              <div class=" form_row_pt">
+                <label class="trade_label" for="description">Description</label>
+                <textarea type="text" name="description" maxlength="100" id="id_description">{{ form.instance.description }}</textarea>
+              </div>
+            
+              <div class=" form_row_pt">
+                <label class="trade_label" for="image">Image</label>
+                <input class="trade_input_img" onchange="upload_img(this);" type="file" name="image" id="id_image" required>  
+              </div>
+  
+              <div class="preview_img_div form_row_pt_last">
+                <img id="img_id" src="{{ form.instance.image.url }}" alt="Unsuccessful upload. Try again"/>
+              </div>
+
+              <div class="pt_btn">
+                <div class="form_row_pswd_btn">
+                    <input type="submit" class="input_pswd_btn" value="Edit">
+                </div>
+                <div class="form_row_pswd_btn">
+                    <a class="input_pswd_btn" onclick="removeform(), showimage(), removedelete(), showedit(), removedisc()">Discard</a>
+                </div>
+              </div>
+  
+            </div>
+          </form>
+      </div>
+    </div>
+  </div> 
+  
+  <script type="text/javascript">
+    function upload_img(input) {
+        var x, i;
+        x = document.querySelectorAll("#img_id");
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img_id').attr('src', e.target.result);
+                for (i = 0; i < x.length; i++) {
+                  x[i].style.display = "inline-block";
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+  </script>
+
+  <div class="page-content" id="del_form" style="display: none;">
+    <div class="signup_content" id="del_form">
+        <div class="form_right">
+          <div class="img_tab">
+            <img class="img_form" src="{% static 'community/images/chart.PNG' %}" alt="">
+          </div>
+
+          <div class="tabcontent">
+            <div class="delete_text">Are You Sure You Want To Delete This Trade</div> 
+            <div class="delete_text_two">This Action Cannot Be Undone</div> 
+          </div>
+
+          <div class="pt_btn">
+            <div class="form_row_pswd_btn">
+                <a class="delete_btn" href="{% url 'deletetrade' trade.id %}">Delete</a>
+            </div>
+            <div class="form_row_pswd_btn">
+                <a class="input_pswd_btn" onclick="removedelform(), showedit(), showimage(), removedelete(), removedisc()">Nevermind</a>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+<!-- userprofile DIV -->
+</div>
+<!-- userprofile DIV -->
+
+<script>
+  function showform() {
+    var x, i;
+    x = $("#editForm");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "flex";
+    } 
+}
+function removeform() {
+    var x, i;
+    x = $("#editForm");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+function removeimage() {
+    var x, i;
+    x = $("#removeIMG");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+function showimage() {
+    var x, i;
+    x = $("#removeIMG");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "block";
+    } 
+}
+function showdelete() {
+    var x, i;
+    x = $("#delete_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "block";
+    } 
+}
+function removedelete() {
+    var x, i;
+    x = $("#delete_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+function showedit() {
+    var x, i;
+    x = $("#edit_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "block";
+    } 
+}
+function removeedit() {
+    var x, i;
+    x = $("#edit_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+function showdelform() {
+    var x, i;
+    x = $("#del_form");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "block";
+    } 
+}
+function removedelform() {
+    var x, i;
+    x = $("#del_form");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+function showdisc() {
+    var x, i;
+    x = $("#disc_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "block";
+    } 
+}
+function removedisc() {
+    var x, i;
+    x = $("#disc_sec");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    } 
+}
+</script>
+
+<script type="text/javascript">
+  var pl = '';
+  if ('{{trade.winlose}}' == 'WIN') { pl = 'Profit' }
+  else if ('{{trade.winlose}}' == 'LOSE') { pl = 'Loss' }
+  else { pl = 'BE' }
+  document.getElementById("PL").innerHTML = pl;
+</script>
+
+{% endblock %}
