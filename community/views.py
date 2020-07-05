@@ -85,7 +85,7 @@ def fullcommunity(request):
 def feed(request):
     if 'search' in request.GET:
         search_term = request.GET['search']
-        if search_term.isdigit():
+        if search_term[0].isdigit():
             trades = Trade.objects.filter(openedpositionon__icontains=search_term, openedpositionon__gt=datetime.datetime.today()-datetime.timedelta(days=364))[0:100]
             accounts = UserProfile.objects.all()
             return render(request, 'community/feed.html', {'accounts':accounts, 'trades':trades})
